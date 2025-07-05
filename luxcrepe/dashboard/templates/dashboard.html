@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - SEADOG Command Center</title>
+    <link rel="stylesheet" href="/static/css/terminal.css">
+</head>
+<body>
+    <div class="ascii-header">
+ ███████ ███████  █████  ██████   ██████   ██████  
+ ██      ██      ██   ██ ██   ██ ██    ██ ██       
+ ███████ █████   ███████ ██   ██ ██    ██ ██   ███ 
+      ██ ██      ██   ██ ██   ██ ██    ██ ██    ██ 
+ ███████ ███████ ██   ██ ██████   ██████   ██████  
+                                                   
+ ▄████▄   ▒█████   ███▄ ▄███▓ ███▄ ▄███▓ ▄▄▄       ███▄    █ ▓█████▄ 
+▒██▀ ▀█  ▒██▒  ██▒▓██▒▀█▀ ██▒▓██▒▀█▀ ██▒▒████▄     ██ ▀█   █ ▒██▀ ██▌
+▒▓█    ▄ ▒██░  ██▒▓██    ▓██░▓██    ▓██░▒██  ▀█▄  ▓██  ▀█ ██▒░██   █▌
+▒▓▓▄ ▄██▒▒██   ██░▒██    ▒██ ▒██    ▒██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒░▓█▄   ▌
+▒ ▓███▀ ░░ ████▓▒░▒██▒   ░██▒▒██▒   ░██▒ ▓█   ▓██▒▒██░   ▓██░░▒████▓ 
+░ ░▒ ▒  ░░ ▒░▒░▒░ ░ ▒░   ░  ░░ ▒░   ░  ░ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ▒▒▓  ▒ 
+  ░  ▒     ░ ▒ ▒░ ░  ░      ░░  ░      ░  ▒   ▒▒ ░░ ░░   ░ ▒░ ░ ▒  ▒ 
+░        ░ ░ ░ ▒  ░      ░   ░      ░     ░   ▒      ░   ░ ░  ░ ░  ░ 
+░ ░          ░ ░         ░          ░         ░  ░         ░    ░    
+░                                                              ░      
+    </div>
+
+    <nav class="nav-bar">
+        <a href="/" class="nav-link active">DASHBOARD</a>
+        <a href="/agents" class="nav-link">AGENTS</a>
+        <a href="/tests" class="nav-link">TESTS</a>
+        <a href="/intel" class="nav-link">INTEL</a>
+    </nav>
+
+    <div class="container">
+        <!-- System Status Overview -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>SYSTEM STATUS</h2>
+                <div class="status-line">
+                    <span class="status-label">INTEGRATION:</span>
+                    <span class="status-value" id="integration-status">
+                        {% if system_status.integration_active %}
+                        <span class="status-online">● ONLINE</span>
+                        {% else %}
+                        <span class="status-offline">● OFFLINE</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">INTELLIGENCE:</span>
+                    <span class="status-value" id="intelligence-status">
+                        {% if system_status.intelligence_active %}
+                        <span class="status-online">● ACTIVE</span>
+                        {% else %}
+                        <span class="status-offline">● STANDBY</span>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">AGENTS ONLINE:</span>
+                    <span class="status-value" id="agents-online">{{ system_status.agents_online }}</span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">ACTIVE OPS:</span>
+                    <span class="status-value" id="active-ops">{{ system_status.active_operations }}</span>
+                </div>
+                <div class="status-line">
+                    <span class="status-label">UPTIME:</span>
+                    <span class="status-value" id="system-uptime">{{ system_status.uptime or "CALCULATING..." }}</span>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>REAL-TIME METRICS</h2>
+                <div class="metrics-row">
+                    <span class="metric-name">CPU USAGE:</span>
+                    <span class="metric-value" id="cpu-usage">---%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="cpu-progress" style="width: 0%"></div>
+                </div>
+                
+                <div class="metrics-row">
+                    <span class="metric-name">MEMORY:</span>
+                    <span class="metric-value" id="memory-usage">---%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="memory-progress" style="width: 0%"></div>
+                </div>
+                
+                <div class="metrics-row">
+                    <span class="metric-name">RESPONSE TIME:</span>
+                    <span class="metric-value" id="response-time">--- ms</span>
+                </div>
+                
+                <div class="metrics-row">
+                    <span class="metric-name">SUCCESS RATE:</span>
+                    <span class="metric-value" id="success-rate">---%</span>
+                </div>
+                
+                <div class="metrics-row">
+                    <span class="metric-name">THROUGHPUT:</span>
+                    <span class="metric-value" id="throughput">--- ops/min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Squad Status Overview -->
+        <div class="terminal-box">
+            <h2>SQUAD STATUS OVERVIEW</h2>
+            <div class="agent-grid" id="squad-overview">
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-id">ALPHA SQUAD</span>
+                        <span class="agent-status status-online">● OPERATIONAL</span>
+                    </div>
+                    <div class="agent-details">
+                        COMMAND & CONTROL<br>
+                        AGENTS: <span id="alpha-count">3</span> | STATUS: <span id="alpha-status">READY</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-id">BRAVO SQUAD</span>
+                        <span class="agent-status status-online">● OPERATIONAL</span>
+                    </div>
+                    <div class="agent-details">
+                        FIRE TEAM<br>
+                        AGENTS: <span id="bravo-count">4</span> | STATUS: <span id="bravo-status">READY</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-id">CHARLIE SQUAD</span>
+                        <span class="agent-status status-online">● OPERATIONAL</span>
+                    </div>
+                    <div class="agent-details">
+                        SUPPORT<br>
+                        AGENTS: <span id="charlie-count">4</span> | STATUS: <span id="charlie-status">READY</span>
+                    </div>
+                </div>
+                
+                <div class="agent-card">
+                    <div class="agent-header">
+                        <span class="agent-id">DELTA SQUAD</span>
+                        <span class="agent-status status-online">● OPERATIONAL</span>
+                    </div>
+                    <div class="agent-details">
+                        INTELLIGENCE & RECOVERY<br>
+                        AGENTS: <span id="delta-count">2</span> | STATUS: <span id="delta-status">READY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Control Panel -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>OPERATION CONTROL</h2>
+                <div class="control-panel">
+                    <button class="btn btn-primary" onclick="startReconnaissance()">START RECON</button>
+                    <button class="btn btn-primary" onclick="startFullSpectrum()">FULL SPECTRUM</button>
+                    <button class="btn" onclick="refreshStatus()">REFRESH</button>
+                    <button class="btn btn-danger" onclick="emergencyStop()">EMERGENCY STOP</button>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="status-line">
+                        <span class="status-label">LAST OPERATION:</span>
+                        <span class="status-value" id="last-operation">NONE</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">OPERATION STATUS:</span>
+                        <span class="status-value" id="operation-status">STANDBY</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>LIVE INTELLIGENCE FEED</h2>
+                <div class="intel-feed" id="intelligence-feed">
+                    <div class="intel-entry">
+                        <span class="intel-time">--:--:--</span>
+                        <span class="intel-type INTEL">INTEL</span>
+                        <span class="intel-message">Awaiting intelligence data...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="terminal-box">
+            <h3>
+                <span class="live-indicator" id="connection-indicator"></span>
+                CONNECTION STATUS: <span id="connection-status">CONNECTING...</span>
+            </h3>
+            <div class="status-line">
+                <span class="status-label">WEBSOCKET:</span>
+                <span class="status-value" id="websocket-status">INITIALIZING</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">LAST UPDATE:</span>
+                <span class="status-value" id="last-update">{{ system_status.last_update or "NEVER" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

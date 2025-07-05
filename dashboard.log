@@ -1,0 +1,44 @@
+2025-07-05 21:01:18,712 - luxcrepe.ml.inference.predictor - INFO - Product detection model loaded (rule-based fallback)
+2025-07-05 21:01:18,712 - luxcrepe.ml.inference.predictor - INFO - Price extraction model loaded (rule-based fallback)
+2025-07-05 21:01:18,712 - luxcrepe.ml.inference.predictor - INFO - Brand extraction model loaded
+2025-07-05 21:01:18,712 - luxcrepe.extractors.hybrid - INFO - Initialized 3 ML predictors
+2025-07-05 21:01:18,713 - luxcrepe.core.scraper - INFO - LuxcrepeScraper initialized
+2025-07-05 21:01:18,713 - luxcrepe.core.scraper - INFO - Extraction stats: {'ml_available': True, 'ml_predictors': 3, 'traditional_available': True, 'extraction_methods': ['traditional', 'ml', 'hybrid'], 'ensemble_voting': 'weighted', 'quality_threshold': 0.8}
+2025-07-05 21:01:18,713 - SEADOG.RealCommandCenter - INFO - ✅ Luxcrepe scraper initialized
+2025-07-05 21:01:18,713 - luxcrepe.ml.inference.predictor - INFO - Product detection model loaded (rule-based fallback)
+2025-07-05 21:01:18,713 - luxcrepe.ml.inference.predictor - INFO - Price extraction model loaded (rule-based fallback)
+2025-07-05 21:01:18,713 - luxcrepe.ml.inference.predictor - INFO - Brand extraction model loaded
+2025-07-05 21:01:18,713 - luxcrepe.extractors.hybrid - INFO - Initialized 3 ML predictors
+2025-07-05 21:01:18,713 - luxcrepe.core.scraper - INFO - LuxcrepeScraper initialized
+2025-07-05 21:01:18,713 - luxcrepe.core.scraper - INFO - Extraction stats: {'ml_available': True, 'ml_predictors': 3, 'traditional_available': True, 'extraction_methods': ['traditional', 'ml', 'hybrid'], 'ensemble_voting': 'weighted', 'quality_threshold': 0.8}
+2025-07-05 21:01:18,713 - SEADOG.Intelligence.Collector.LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_COLLECTOR - INFO - Intelligence collector LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_COLLECTOR initialized
+2025-07-05 21:01:18,713 - SEADOG.Performance.Monitor.LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_PERFORMANCE - INFO - Performance monitor LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_PERFORMANCE initialized
+2025-07-05 21:01:18,713 - SEADOG.Intelligence.Analyzer.LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_ANALYZER - INFO - Intelligence analyzer LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_ANALYZER initialized
+2025-07-05 21:01:18,713 - SEADOG.Intelligence.System - INFO - SEADOG Intelligence System LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE initialized
+2025-07-05 21:01:18,713 - Luxcrepe.SEADOG.Integration - INFO - SEADOG-Luxcrepe integration initialized: LUXCREPE_SEADOG_20250705_210118
+2025-07-05 21:01:18,713 - SEADOG.RealCommandCenter - INFO - ✅ SEADOG integration initialized
+2025-07-05 21:01:18,713 - SEADOG.Intel.COMMAND_CENTER_INTEL - INFO - Intelligence system COMMAND_CENTER_INTEL initialized
+2025-07-05 21:01:18,713 - SEADOG.RealCommandCenter - INFO - ✅ Intelligence system initialized
+2025-07-05 21:01:18,713 - Luxcrepe.Validation.RealWorld - INFO - Real-world validator initialized
+2025-07-05 21:01:18,713 - SEADOG.RealCommandCenter - INFO - ✅ Real world validator initialized
+2025-07-05 21:01:18,715 - SEADOG.RealCommandCenter - INFO - Real SEADOG Command Center initialized
+2025-07-05 21:01:18,715 - SEADOG.Intelligence.Collector.LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_COLLECTOR - INFO - Intelligence collection started
+2025-07-05 21:01:18,715 - SEADOG.Performance.Monitor.LUXCREPE_SEADOG_20250705_210118_INTELLIGENCE_PERFORMANCE - INFO - Performance monitoring started
+2025-07-05 21:01:18,716 - SEADOG.Intelligence.System - INFO - SEADOG Intelligence System started
+2025-07-05 21:01:18,716 - Luxcrepe.SEADOG.Integration - INFO - SEADOG-Luxcrepe integration started
+2025-07-05 21:01:18,716 - SEADOG.Intel.COMMAND_CENTER_INTEL - INFO - Intelligence system started
+2025-07-05 21:01:18,716 - SEADOG.RealCommandCenter - INFO - Real background monitoring started
+INFO:     Started server process [9759]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8001 (Press CTRL+C to quit)
+2025-07-05 21:01:23,729 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:01:33,730 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:01:43,732 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:01:53,733 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:02:03,735 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:02:13,736 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:02:18,728 - SEADOG.Intelligence.System - INFO - Performing periodic intelligence analysis
+2025-07-05 21:02:23,738 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:02:33,740 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'
+2025-07-05 21:02:43,741 - SEADOG.RealCommandCenter - ERROR - Monitoring loop error: Invalid isoformat string: '21:01:18'

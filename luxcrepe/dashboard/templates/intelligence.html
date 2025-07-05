@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - SEADOG Command Center</title>
+    <link rel="stylesheet" href="/static/css/terminal.css">
+</head>
+<body>
+    <div class="ascii-header">
+██╗███╗   ██╗████████╗███████╗██╗     ██╗     ██╗ ██████╗ ███████╗███╗   ██╗ ██████╗███████╗
+██║████╗  ██║╚══██╔══╝██╔════╝██║     ██║     ██║██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔════╝
+██║██╔██╗ ██║   ██║   █████╗  ██║     ██║     ██║██║  ███╗█████╗  ██╔██╗ ██║██║     █████╗  
+██║██║╚██╗██║   ██║   ██╔══╝  ██║     ██║     ██║██║   ██║██╔══╝  ██║╚██╗██║██║     ██╔══╝  
+██║██║ ╚████║   ██║   ███████╗███████╗███████╗██║╚██████╔╝███████╗██║ ╚████║╚██████╗███████╗
+╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝╚══════╝
+    </div>
+
+    <nav class="nav-bar">
+        <a href="/" class="nav-link">DASHBOARD</a>
+        <a href="/agents" class="nav-link">AGENTS</a>
+        <a href="/tests" class="nav-link">TESTS</a>
+        <a href="/intel" class="nav-link active">INTEL</a>
+    </nav>
+
+    <div class="container">
+        <!-- Intelligence Feed -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>REAL-TIME INTELLIGENCE FEED</h2>
+                <div class="control-panel mb-2">
+                    <button class="btn" onclick="filterIntel('ALL')">ALL</button>
+                    <button class="btn" onclick="filterIntel('THREAT')">THREATS</button>
+                    <button class="btn" onclick="filterIntel('INTEL')">INTEL</button>
+                    <button class="btn" onclick="filterIntel('ALERT')">ALERTS</button>
+                    <button class="btn" onclick="clearFeed()">CLEAR</button>
+                </div>
+                
+                <div class="intel-feed" id="live-intel-feed">
+                    {% for entry in intelligence_feed %}
+                    <div class="intel-entry">
+                        <span class="intel-time">{{ entry.timestamp }}</span>
+                        <span class="intel-type {{ entry.type }}">{{ entry.type }}</span>
+                        <span class="intel-message">{{ entry.message }}</span>
+                    </div>
+                    {% endfor %}
+                    {% if not intelligence_feed %}
+                    <div class="intel-entry">
+                        <span class="intel-time">--:--:--</span>
+                        <span class="intel-type INTEL">INTEL</span>
+                        <span class="intel-message">Intelligence system initializing...</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>THREAT ANALYSIS</h2>
+                <div class="metrics-row">
+                    <span class="metric-name">THREAT LEVEL:</span>
+                    <span class="metric-value text-warning" id="threat-level">MODERATE</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">ACTIVE THREATS:</span>
+                    <span class="metric-value" id="active-threats">0</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">BLOCKED ATTEMPTS:</span>
+                    <span class="metric-value" id="blocked-attempts">0</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">RATE LIMITING:</span>
+                    <span class="metric-value" id="rate-limiting">NORMAL</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">STEALTH SCORE:</span>
+                    <span class="metric-value" id="stealth-score">85%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="stealth-progress" style="width: 85%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intelligence Categories -->
+        <div class="grid-3">
+            <div class="terminal-box">
+                <h2>TECHNICAL INTELLIGENCE</h2>
+                <div id="tech-intel" style="height: 200px; overflow-y: auto;">
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:32:15</span>
+                        <span class="log-message">CloudFlare protection detected</span>
+                        <span class="log-status text-warning">HIGH</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:42</span>
+                        <span class="log-message">JavaScript framework: React 18.2</span>
+                        <span class="log-status text-success">INFO</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:15</span>
+                        <span class="log-message">Rate limit: 100 req/min</span>
+                        <span class="log-status text-warning">WARN</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:30:58</span>
+                        <span class="log-message">SSL/TLS configuration valid</span>
+                        <span class="log-status text-success">OK</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:30:33</span>
+                        <span class="log-message">Server: nginx/1.18.0</span>
+                        <span class="log-status text-success">INFO</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>OPERATIONAL INTELLIGENCE</h2>
+                <div id="ops-intel" style="height: 200px; overflow-y: auto;">
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:32:20</span>
+                        <span class="log-message">Target response time: 1.2s</span>
+                        <span class="log-status text-success">GOOD</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:55</span>
+                        <span class="log-message">Scraping success rate: 94%</span>
+                        <span class="log-status text-success">HIGH</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:28</span>
+                        <span class="log-message">Data extraction efficiency: 87%</span>
+                        <span class="log-status text-warning">FAIR</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:05</span>
+                        <span class="log-message">Agent performance nominal</span>
+                        <span class="log-status text-success">OK</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:30:41</span>
+                        <span class="log-message">Network latency: 45ms</span>
+                        <span class="log-status text-success">LOW</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>SECURITY INTELLIGENCE</h2>
+                <div id="security-intel" style="height: 200px; overflow-y: auto;">
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:32:12</span>
+                        <span class="log-message">WAF bypass successful</span>
+                        <span class="log-status text-success">OK</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:47</span>
+                        <span class="log-message">IP rotation executed</span>
+                        <span class="log-status text-success">AUTO</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:31:20</span>
+                        <span class="log-message">User-agent randomized</span>
+                        <span class="log-status text-success">OK</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:30:52</span>
+                        <span class="log-message">Honeypot detected and avoided</span>
+                        <span class="log-status text-warning">AVOID</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-timestamp">14:30:25</span>
+                        <span class="log-message">Proxy connection stable</span>
+                        <span class="log-status text-success">STABLE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Intelligence Analysis -->
+        <div class="terminal-box">
+            <h2>INTELLIGENCE ANALYSIS & RECOMMENDATIONS</h2>
+            <div class="grid">
+                <div>
+                    <h3>Current Assessment</h3>
+                    <div class="status-line">
+                        <span class="status-label">OVERALL RISK:</span>
+                        <span class="status-value text-warning" id="overall-risk">MODERATE</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">DETECTION PROBABILITY:</span>
+                        <span class="status-value" id="detection-prob">15%</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">OPERATIONAL EFFECTIVENESS:</span>
+                        <span class="status-value text-success" id="ops-effectiveness">HIGH</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">INTELLIGENCE CONFIDENCE:</span>
+                        <span class="status-value" id="intel-confidence">87%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Tactical Recommendations</h3>
+                    <div id="recommendations" style="height: 120px; overflow-y: auto; font-size: 11px;">
+                        <div class="intel-entry">
+                            <span class="intel-type INTEL">REC</span>
+                            <span class="intel-message">Maintain current stealth protocols</span>
+                        </div>
+                        <div class="intel-entry">
+                            <span class="intel-type ALERT">REC</span>
+                            <span class="intel-message">Reduce request frequency for target alpha-7</span>
+                        </div>
+                        <div class="intel-entry">
+                            <span class="intel-type INTEL">REC</span>
+                            <span class="intel-message">Implement additional delays for high-value targets</span>
+                        </div>
+                        <div class="intel-entry">
+                            <span class="intel-type INTEL">REC</span>
+                            <span class="intel-message">Continue monitoring for pattern changes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Target Intelligence -->
+        <div class="terminal-box">
+            <h2>TARGET INTELLIGENCE PROFILES</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>TARGET</th>
+                        <th>TECH STACK</th>
+                        <th>PROTECTION</th>
+                        <th>RISK LEVEL</th>
+                        <th>SUCCESS RATE</th>
+                        <th>LAST ACTIVITY</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="target-intelligence">
+                    <tr>
+                        <td>jsonplaceholder.typicode.com</td>
+                        <td>Node.js/Express</td>
+                        <td>None</td>
+                        <td class="text-success">LOW</td>
+                        <td>100%</td>
+                        <td>14:32:15</td>
+                        <td class="text-success">ACTIVE</td>
+                    </tr>
+                    <tr>
+                        <td>httpbin.org</td>
+                        <td>Python/Flask</td>
+                        <td>CloudFlare</td>
+                        <td class="text-warning">MODERATE</td>
+                        <td>95%</td>
+                        <td>14:31:42</td>
+                        <td class="text-success">ACTIVE</td>
+                    </tr>
+                    <tr>
+                        <td>demo-store.example.com</td>
+                        <td>React/Next.js</td>
+                        <td>WAF + Bot Detection</td>
+                        <td class="text-danger">HIGH</td>
+                        <td>78%</td>
+                        <td>14:30:15</td>
+                        <td class="text-warning">MONITORED</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Intelligence Control Panel -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>INTELLIGENCE CONTROL</h2>
+                <div class="control-panel">
+                    <button class="btn btn-primary" onclick="startIntelligenceGathering()">START GATHERING</button>
+                    <button class="btn" onclick="refreshIntelligence()">REFRESH</button>
+                    <button class="btn" onclick="exportIntelligence()">EXPORT</button>
+                    <button class="btn btn-danger" onclick="stopIntelligence()">STOP</button>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="status-line">
+                        <span class="status-label">INTELLIGENCE STATUS:</span>
+                        <span class="status-value" id="intel-status">ACTIVE</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">COLLECTION RATE:</span>
+                        <span class="status-value" id="collection-rate">12/min</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">DATA POINTS:</span>
+                        <span class="status-value" id="data-points">1,247</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>ALERT CONFIGURATION</h2>
+                <div class="status-line">
+                    <span class="status-label">THREAT ALERTS:</span>
+                    <input type="checkbox" id="threat-alerts" checked style="margin-left: 10px;">
+                </div>
+                <div class="status-line">
+                    <span class="status-label">PERFORMANCE ALERTS:</span>
+                    <input type="checkbox" id="perf-alerts" checked style="margin-left: 10px;">
+                </div>
+                <div class="status-line">
+                    <span class="status-label">SECURITY ALERTS:</span>
+                    <input type="checkbox" id="security-alerts" checked style="margin-left: 10px;">
+                </div>
+                <div class="status-line">
+                    <span class="status-label">ALERT THRESHOLD:</span>
+                    <select id="alert-threshold" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px;">
+                        <option value="LOW">LOW</option>
+                        <option value="MODERATE" selected>MODERATE</option>
+                        <option value="HIGH">HIGH</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="terminal-box">
+            <h3>
+                <span class="live-indicator" id="connection-indicator"></span>
+                INTELLIGENCE SYSTEM: <span id="connection-status">CONNECTING...</span>
+            </h3>
+            <div class="status-line">
+                <span class="status-label">ORACLE STATUS:</span>
+                <span class="status-value" id="oracle-status">ONLINE</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">GHOST STATUS:</span>
+                <span class="status-value" id="ghost-status">OPERATIONAL</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">LAST INTEL UPDATE:</span>
+                <span class="status-value" id="last-update">14:32:20</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/intelligence.js"></script>
+</body>
+</html>

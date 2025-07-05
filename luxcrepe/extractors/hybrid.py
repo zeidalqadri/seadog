@@ -270,7 +270,7 @@ class HybridExtractor:
             product["_is_valid"] = validation_result["is_valid"]
             
             # Only include products that meet minimum quality threshold
-            if validation_result["score"] >= self.config.quality.quality_threshold:
+            if validation_result["score"] >= self.config.ml.quality_threshold:
                 validated_products.append(product)
             else:
                 logger.debug(f"Product failed quality threshold: {validation_result['issues']}")
@@ -353,5 +353,5 @@ class HybridExtractor:
             "traditional_available": True,
             "extraction_methods": ["traditional", "ml", "hybrid"],
             "ensemble_voting": self.config.ml.ensemble_voting,
-            "quality_threshold": self.config.quality.quality_threshold
+            "quality_threshold": self.config.ml.quality_threshold
         }

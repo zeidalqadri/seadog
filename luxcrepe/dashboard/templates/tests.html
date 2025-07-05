@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - SEADOG Command Center</title>
+    <link rel="stylesheet" href="/static/css/terminal.css">
+</head>
+<body>
+    <div class="ascii-header">
+████████╗███████╗███████╗████████╗    ███╗   ███╗ ██████╗ ███╗   ██╗██╗████████╗ ██████╗ ██████╗ 
+╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝    ████╗ ████║██╔═══██╗████╗  ██║██║╚══██╔══╝██╔═══██╗██╔══██╗
+   ██║   █████╗  ███████╗   ██║       ██╔████╔██║██║   ██║██╔██╗ ██║██║   ██║   ██║   ██║██████╔╝
+   ██║   ██╔══╝  ╚════██║   ██║       ██║╚██╔╝██║██║   ██║██║╚██╗██║██║   ██║   ██║   ██║██╔══██╗
+   ██║   ███████╗███████║   ██║       ██║ ╚═╝ ██║╚██████╔╝██║ ╚████║██║   ██║   ╚██████╔╝██║  ██║
+   ╚═╝   ╚══════╝╚══════╝   ╚═╝       ╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+    </div>
+
+    <nav class="nav-bar">
+        <a href="/" class="nav-link">DASHBOARD</a>
+        <a href="/agents" class="nav-link">AGENTS</a>
+        <a href="/tests" class="nav-link active">TESTS</a>
+        <a href="/intel" class="nav-link">INTEL</a>
+    </nav>
+
+    <div class="container">
+        <!-- Test Execution Control -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>TEST EXECUTION CONTROL</h2>
+                <div class="control-panel">
+                    <button class="btn btn-primary" onclick="startTest('RECONNAISSANCE')">START RECON</button>
+                    <button class="btn btn-primary" onclick="startTest('FULL_SPECTRUM')">FULL SPECTRUM</button>
+                    <button class="btn" onclick="pauseTest()">PAUSE</button>
+                    <button class="btn btn-danger" onclick="stopTest()">STOP</button>
+                </div>
+                
+                <div style="margin-top: 15px;">
+                    <div class="status-line">
+                        <span class="status-label">CURRENT TEST:</span>
+                        <span class="status-value" id="current-test">NONE</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">STATUS:</span>
+                        <span class="status-value" id="test-status">STANDBY</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">PROGRESS:</span>
+                        <span class="status-value" id="test-progress">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>EXECUTION METRICS</h2>
+                <div class="metrics-row">
+                    <span class="metric-name">TESTS EXECUTED:</span>
+                    <span class="metric-value" id="tests-executed">0</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">SUCCESS RATE:</span>
+                    <span class="metric-value" id="test-success-rate">---%</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">AVG DURATION:</span>
+                    <span class="metric-value" id="avg-duration">--- s</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">ERRORS:</span>
+                    <span class="metric-value" id="test-errors">0</span>
+                </div>
+                <div class="metrics-row">
+                    <span class="metric-name">LAST EXECUTION:</span>
+                    <span class="metric-value" id="last-execution">NEVER</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Configuration -->
+        <div class="terminal-box">
+            <h2>TEST CONFIGURATION</h2>
+            <div class="grid-3">
+                <div>
+                    <h3>Target URLs</h3>
+                    <textarea id="target-urls" rows="8" style="width: 100%; background: #111; color: #fff; border: 1px solid #333; padding: 10px; font-family: monospace;">https://jsonplaceholder.typicode.com/posts/1
+https://httpbin.org/json
+https://httpbin.org/get</textarea>
+                </div>
+                
+                <div>
+                    <h3>Test Parameters</h3>
+                    <div class="status-line">
+                        <span class="status-label">INTENSITY:</span>
+                        <select id="test-intensity" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px;">
+                            <option value="LOW">LOW</option>
+                            <option value="MODERATE" selected>MODERATE</option>
+                            <option value="HIGH">HIGH</option>
+                            <option value="AGGRESSIVE">AGGRESSIVE</option>
+                        </select>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">TIMEOUT:</span>
+                        <select id="test-timeout" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px;">
+                            <option value="30">30 seconds</option>
+                            <option value="60" selected>60 seconds</option>
+                            <option value="120">2 minutes</option>
+                            <option value="300">5 minutes</option>
+                        </select>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">PARALLEL:</span>
+                        <input type="checkbox" id="parallel-execution" checked style="margin-left: 10px;">
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Output Options</h3>
+                    <div class="status-line">
+                        <span class="status-label">SAVE RESULTS:</span>
+                        <input type="checkbox" id="save-results" checked style="margin-left: 10px;">
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">FORMAT:</span>
+                        <select id="output-format" style="background: #111; color: #fff; border: 1px solid #333; padding: 5px;">
+                            <option value="JSON" selected>JSON</option>
+                            <option value="CSV">CSV</option>
+                            <option value="XML">XML</option>
+                        </select>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">VERBOSE:</span>
+                        <input type="checkbox" id="verbose-output" style="margin-left: 10px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Operations Log -->
+        <div class="terminal-box">
+            <h2>RECENT OPERATIONS LOG</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>OPERATION ID</th>
+                        <th>TYPE</th>
+                        <th>TARGETS</th>
+                        <th>STATUS</th>
+                        <th>START TIME</th>
+                        <th>DURATION</th>
+                        <th>RESULTS</th>
+                    </tr>
+                </thead>
+                <tbody id="operations-log">
+                    {% for operation in operation_log %}
+                    <tr>
+                        <td>{{ operation.operation_id }}</td>
+                        <td>{{ operation.type }}</td>
+                        <td>{{ operation.targets|length if operation.targets else 0 }}</td>
+                        <td class="{% if operation.status == 'COMPLETED' %}text-success{% elif operation.status == 'FAILED' %}text-danger{% else %}text-warning{% endif %}">
+                            {{ operation.status }}
+                        </td>
+                        <td>{{ operation.timestamp }}</td>
+                        <td>---</td>
+                        <td>---</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not operation_log %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">NO OPERATIONS RECORDED</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Live Test Output -->
+        <div class="terminal-box">
+            <h2>LIVE TEST OUTPUT</h2>
+            <div id="test-output" style="height: 200px; overflow-y: auto; background: #000; padding: 10px; border: 1px solid #333; font-family: monospace; font-size: 11px;">
+                <div class="log-entry">
+                    <span class="log-timestamp">--:--:--</span>
+                    <span class="log-message">Awaiting test execution...</span>
+                    <span class="log-status">READY</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Results Summary -->
+        <div class="grid">
+            <div class="terminal-box">
+                <h2>LAST TEST RESULTS</h2>
+                <div id="test-results-summary">
+                    <div class="status-line">
+                        <span class="status-label">TEST ID:</span>
+                        <span class="status-value" id="last-test-id">NONE</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">TARGETS TESTED:</span>
+                        <span class="status-value" id="targets-tested">0</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">SUCCESS RATE:</span>
+                        <span class="status-value" id="last-success-rate">---%</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">TOTAL DURATION:</span>
+                        <span class="status-value" id="last-duration">--- s</span>
+                    </div>
+                    <div class="status-line">
+                        <span class="status-label">RECOMMENDATIONS:</span>
+                        <span class="status-value" id="recommendations-count">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-box">
+                <h2>QUICK ACTIONS</h2>
+                <div class="control-panel" style="flex-direction: column; gap: 10px;">
+                    <button class="btn" onclick="loadPresetUrls('SAFE_APIS')">LOAD SAFE APIs</button>
+                    <button class="btn" onclick="loadPresetUrls('ECOMMERCE_DEMO')">LOAD DEMO STORE</button>
+                    <button class="btn" onclick="exportResults()">EXPORT RESULTS</button>
+                    <button class="btn" onclick="clearLog()">CLEAR LOG</button>
+                    <button class="btn btn-danger" onclick="resetAllTests()">RESET ALL</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="terminal-box">
+            <h3>
+                <span class="live-indicator" id="connection-indicator"></span>
+                TEST EXECUTION ENGINE: <span id="connection-status">CONNECTING...</span>
+            </h3>
+            <div class="status-line">
+                <span class="status-label">ENGINE STATUS:</span>
+                <span class="status-value" id="engine-status">INITIALIZING</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">QUEUE SIZE:</span>
+                <span class="status-value" id="queue-size">0</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">LAST UPDATE:</span>
+                <span class="status-value" id="last-update">NEVER</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/tests.js"></script>
+</body>
+</html>

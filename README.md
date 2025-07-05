@@ -33,11 +33,25 @@ SEADOG implements a SEAL-grade multi-agent test squad designed to comprehensivel
 
 ## Key Features
 
+### Core SEADOG Framework
 - **Military-Standard Protocols**: Challenge-response authentication, SITREP reporting, 9-Line emergency procedures
 - **ML-Enhanced Testing**: Hybrid rule-based + AI approaches for intelligent test execution
 - **Comprehensive Coverage**: Edge cases, stress testing, accuracy validation, performance analysis
 - **Real-time Coordination**: Advanced inter-agent communication and mission orchestration
 - **Adaptive Intelligence**: Progressive insight building and error decorrelation
+
+### SEADOG-Luxcrepe Integration
+- **Integrated Testing**: Seamless combination of scraping and military-grade testing
+- **Real-time Intelligence**: Live monitoring and analysis during scraping operations
+- **Automated Validation**: Comprehensive validation of scraping results and system performance
+- **Risk Management**: Built-in OPSEC and configurable risk levels for different scenarios
+- **Performance Optimization**: AI-driven recommendations for scraping configuration improvements
+
+### Smart Configuration System
+- **Pre-configured Scenarios**: Ready-to-use configurations for e-commerce, APIs, news sites, etc.
+- **Adaptive Targeting**: Auto-detection of target types with appropriate test strategies
+- **Risk-aware Testing**: Configurable intensity levels from stealth to aggressive testing
+- **Template-based Setup**: JSON configuration templates for quick deployment
 
 ## Mission Phases
 
@@ -54,6 +68,8 @@ pip install -e .
 ```
 
 ## Usage
+
+### SEADOG Testing Framework
 
 ```python
 from luxcrepe.tests.mission_framework import MissionOrchestrator
@@ -72,6 +88,55 @@ mission_params = MissionParameters(
 
 # Execute mission
 results = await orchestrator.execute_mission(mission_params)
+```
+
+### SEADOG-Luxcrepe Integration
+
+```python
+from luxcrepe.integration import LuxcrepeSEADOGIntegration, IntegrationConfig
+
+# Create integration configuration
+config = IntegrationConfig(
+    intelligence_enabled=True,
+    real_time_monitoring=True,
+    test_suite_type="RECONNAISSANCE"
+)
+
+# Initialize and run integrated scraping with testing
+integration = LuxcrepeSEADOGIntegration(config)
+
+async def main():
+    await integration.start_integration()
+    
+    # Perform scraping with SEADOG validation
+    results = await integration.integrated_scrape_with_testing(
+        "https://demo-store.com/products",
+        enable_testing=True,
+        test_intensity="MODERATE"
+    )
+    
+    print(f"Scraped {len(results['scraping_results'])} products")
+    print(f"SEADOG validation score: {results.get('validation_score', 'N/A')}")
+    
+    await integration.stop_integration()
+
+asyncio.run(main())
+```
+
+### Quick Testing Functions
+
+```python
+from luxcrepe.integration import quick_reconnaissance_test
+from luxcrepe.validation import validate_api_endpoints
+
+# Quick reconnaissance test
+recon_results = await quick_reconnaissance_test([
+    "https://demo-store.com",
+    "https://api.example.com"
+])
+
+# Validate API endpoints
+api_validation = await validate_api_endpoints()
 ```
 
 ## Military Communication Standards

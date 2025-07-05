@@ -16,7 +16,7 @@ import json
 from ...base_agent import BaseAgent, MissionStatus, ThreatLevel, ReportPriority
 from ....core.scraper import LuxcrepeScraper
 from ....core.utils import RetrySession
-from ....ml.extractors import HybridExtractor
+from ....extractors.hybrid import HybridExtractor
 
 
 class AssaultAgent(BaseAgent):

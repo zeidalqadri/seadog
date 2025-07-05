@@ -1,0 +1,88 @@
+{
+  "seadog_integration": {
+    "intelligence_enabled": true,
+    "real_time_monitoring": true,
+    "auto_recovery": true,
+    "test_suite_type": "RECONNAISSANCE",
+    "output_directory": "./ecommerce_test_results",
+    "parallel_execution": true,
+    "timeout_minutes": 20
+  },
+  "scraper_config": {
+    "delay": 2.0,
+    "max_retries": 5,
+    "retry_delay": 3.0,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Connection": "keep-alive",
+      "Sec-Fetch-Dest": "document",
+      "Sec-Fetch-Mode": "navigate",
+      "Sec-Fetch-Site": "none"
+    }
+  },
+  "test_scenarios": {
+    "reconnaissance": {
+      "depth": "COMPREHENSIVE",
+      "opsec_level": "COVERT",
+      "intelligence_requirements": [
+        "PRODUCT_STRUCTURE_ANALYSIS",
+        "PAGINATION_DETECTION",
+        "RATE_LIMITING_ASSESSMENT",
+        "SECURITY_HEADERS_ANALYSIS",
+        "PRICE_EXTRACTION_VALIDATION",
+        "INVENTORY_STATUS_DETECTION"
+      ]
+    },
+    "target_analysis": {
+      "product_page_detection": true,
+      "category_page_detection": true,
+      "search_functionality": true,
+      "api_endpoint_discovery": true,
+      "review_system_analysis": true,
+      "pricing_structure_analysis": true
+    },
+    "performance_thresholds": {
+      "max_response_time": 8.0,
+      "min_success_rate": 0.85,
+      "max_error_rate": 0.15,
+      "min_product_extraction_rate": 0.9
+    }
+  },
+  "intelligence_system": {
+    "monitoring_level": "ACTIVE",
+    "alert_thresholds": {
+      "response_time_warning": 4.0,
+      "response_time_critical": 8.0,
+      "success_rate_warning": 0.9,
+      "success_rate_critical": 0.8,
+      "error_rate_warning": 0.05,
+      "error_rate_critical": 0.15
+    },
+    "analysis_interval": 30,
+    "data_retention_hours": 48
+  },
+  "ecommerce_specific": {
+    "product_fields_priority": [
+      "name",
+      "price",
+      "availability",
+      "description",
+      "images",
+      "brand",
+      "sku"
+    ],
+    "price_validation": {
+      "currency_detection": true,
+      "price_format_validation": true,
+      "discount_detection": true
+    },
+    "inventory_tracking": {
+      "stock_status_detection": true,
+      "availability_monitoring": true,
+      "backorder_detection": true
+    }
+  }
+}
